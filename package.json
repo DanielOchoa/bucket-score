@@ -1,0 +1,35 @@
+{
+  "name": "bucketscore",
+  "version": "0.0.1",
+  "description": "See various stats on the members of a team. See who has the most commits, most lines of code, etc.",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DanyHunter/bucket-score.git"
+  },
+  "keywords": [
+    "github",
+    "bitbucket",
+    "score",
+    "leaderboard",
+    "commits"
+  ],
+  "author": "Daniel Ochoa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DanyHunter/bucket-score/issues"
+  },
+  "homepage": "https://github.com/DanyHunter/bucket-score",
+  "dependencies": {
+    "logfmt": "~0.18.1",
+    "express": "~3.4.8",
+    "request": "~2.33.0",
+    "oauth": "~0.9.11"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
