@@ -17,7 +17,6 @@ var oa = new OAuth('https://bitbucket.org/api/1.0/oauth/request_token',
     'https://bitbucket.org/api/1.0/oauth/access_token',
     apiVars.KEY,
     apiVars.SECRET,
-    'Kb7YgWesbnyJMycFB5eDvzp4Nwe7abep',
     '1.0',
     'http://localhost:5000/oauth/callback',
     'HMAC-SHA1');
