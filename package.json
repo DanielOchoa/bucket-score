@@ -27,7 +27,8 @@
     "logfmt": "~0.18.1",
     "express": "~3.4.8",
     "request": "~2.33.0",
-    "oauth": "~0.9.11"
+    "oauth": "~0.9.11",
+    "lodash": "~2.4.1"
   },
   "engines": {
     "node": "0.10.x"
