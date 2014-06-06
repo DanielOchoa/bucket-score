@@ -25,13 +25,9 @@ var oa = new OAuth(
   'HMAC-SHA1'
 );
 
-//// routes ////
-app.get('/', rootPath);
-app.get('/oauth/callback', oauthCallbackPath);
-app.get('/STORE', storePath);
+/// routes definitions ///
 
-
-function rootPath(req, res) {
+var rootPath = function (req, res) {
   oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
     if (error) {
       res.send(error);
@@ -44,7 +40,20 @@ function rootPath(req, res) {
   });
 }
 
-function oauthCallbackPath(req, res) {
+// build html index //
+var buildHtml = function (data) {
+  var tmpl = data.toString();
+  var titles = _.pluck(STORE.data.values, 'full_name');
+  var descriptions = _.pluck(STORE.data.values, 'description');
+  var html = ''
+  for (var i = 0; i < titles.length; i++) {
+    html += '<h4>' + titles[i] + '</h4>';
+    html += '<p>' + descriptions[i] + '</p>';
+  }
+  return html
+}
+
+var oauthCallbackPath = function(req, res) {
   STORE.oauth_verifier = req.query.oauth_verifier;
   var accessTokenCallback = function(error, access_token, access_token_secret, results) {
     if (error) {
@@ -56,7 +65,8 @@ function oauthCallbackPath(req, res) {
       STORE.access_token_secret = access_token_secret;
       // TODO: build it so users can use their own api keys and enter their team name
       // We can now use oa.get, oa.post and more to get the authenticated json
-      oa.get('https://bitbucket.org/api/2.0/repositories/Poetic', access_token, access_token_secret, function(err, data) {
+      oa.get(
+        'https://bitbucket.org/api/2.0/repositories/Poetic', access_token, access_token_secret, function(err, data) {
         if (err) {
           console.log(err);
           res.redirect('/');
@@ -69,7 +79,7 @@ function oauthCallbackPath(req, res) {
               console.log(err);
               res.end('Server Error');
             } else {
-              var html = build_html(data);
+              var html = buildHtml(data);
               html = html.replace('%', html);
               res.send(html);
             }
@@ -86,22 +96,14 @@ function oauthCallbackPath(req, res) {
   );
 }
 
-function storePath(req, res) {
+var storePath = function (req, res) {
   res.send(JSON.stringify(STORE));
 }
 
-// build html index //
-function build_html(data) {
-  var tmpl = data.toString();
-  var titles = _.pluck(STORE.data.values, 'full_name');
-  var descriptions = _.pluck(STORE.data.values, 'description');
-  var html = ''
-  for (var i = 0; i < titles.length; i++) {
-    html += '<h4>' + titles[i] + '</h4>';
-    html += '<p>' + descriptions[i] + '</p>';
-  }
-  return html
-}
+//// routes ////
+app.get('/', rootPath);
+app.get('/oauth/callback', oauthCallbackPath);
+app.get('/STORE', storePath);
 
 //// listen port ////
 var port = Number(process.env.PORT || 5000);
